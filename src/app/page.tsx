@@ -4,13 +4,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Github, Mail, Linkedin, Moon, Sun } from "lucide-react";
+import { Github, Linkedin, Moon, Sun } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
-import emailjs from 'emailjs-com';
-import { useRef } from 'react';
-
-
+import { useEffect, useState, useRef } from "react";
+import emailjs from "emailjs-com";
+import Image from "next/image";
 
 const projects = [
   {
@@ -40,6 +38,55 @@ const projects = [
   },
 ];
 
+// Add your certificates here with public folder paths for logos
+const certificates = [
+  {
+    name: "Google Data Analytics",
+    logo: "/logos/google.svg",
+    link: "https://www.coursera.org/account/accomplishments/specialization/certificate/JL5FM4FNS2XF",
+  },
+  {
+    name: "Nvidia Fundamentals of Deep Learning",
+    logo: "/logos/nvidia.svg",
+    link: "https://learn.nvidia.com/certificates?id=5wqzDmK4QcSYFapeqmARtg",
+  },
+  {
+    name: "Google Cyber Security",
+    logo: "/logos/google.svg",
+    link: "https://coursera.org/share/2204f9575bad370ace2aa65f2b83ea7f",
+  },
+  {
+    name: "Responsive Web Design",
+    logo: "/logos/free-code-camp.svg",
+    link: "https://www.freecodecamp.org/certification/NikhilTanwar/responsive-web-design"
+  },
+  {
+    name: "Introduction to Applied Cryptography- University of London",
+    logo: "/logos/uni-london.svg",
+    link: "https://coursera.org/share/c6ead064241ff382aea6522cda97d939"
+  },
+  {
+    name: "Usable Security - Univeristy of Maryland",
+    logo: "/logos/uni-maryland.svg",
+    link: "https://www.coursera.org/account/accomplishments/verify/3UXUWDQBXKZ3"
+  },
+  {
+    name: "Fundamentals of Accelerated Computing with Cuda Python",
+    logo: "/logos/nvidia.svg",
+    link: "https://learn.nvidia.com/certificates?id=hM7y_GqMTfq2iw5IEl6IFA"
+  },
+  {
+    name: "Cryptography - Univeristy of Maryland",
+    logo: "/logos/uni-maryland.svg",
+    link: "https://coursera.org/share/5cd75414568ae21b7ca6f4fa8786e771"
+  },
+  {
+    name: "Deep Learning for Healthcare - University of Illinois",
+    logo: "/logos/uni-illinois.svg",
+    link: "https://coursera.org/share/da17bee24279a7b0abc30e3fcf8c29da"
+  },
+];
+
 export default function Portfolio() {
   const [darkMode, setDarkMode] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
@@ -47,7 +94,6 @@ export default function Portfolio() {
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
-  // Scroll helper to smoothly scroll to sections by id
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
     if (section) {
@@ -55,24 +101,24 @@ export default function Portfolio() {
     }
   };
 
-  const form= useRef<HTMLFormElement>(null);
+  const form = useRef<HTMLFormElement>(null);
 
   const sendEmail = (e: React.FormEvent) => {
-  e.preventDefault();
-  if (!form.current) return;
+    e.preventDefault();
+    if (!form.current) return;
 
-  emailjs
-    .sendForm('service_qrfbj6e', 'template_m748vtk', form.current, '0-6vt0gq7mj4JVLVw')
-    .then(
-      () => {
+    emailjs
+      .sendForm(
+        "service_qrfbj6e",
+        "template_m748vtk",
+        form.current,
+        "0-6vt0gq7mj4JVLVw"
+      )
+      .then(() => {
         alert("Message sent Successfully!");
         form.current?.reset();
-      },
-
-    );
-};
-
-
+      });
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -121,24 +167,39 @@ export default function Portfolio() {
           </div>
 
           <div className="md:flex space-x-6 font-medium">
-            <button onClick={() => scrollToSection("projects")} className="hover:underline">Projects</button>
-            <button onClick={() => scrollToSection("resume")} className="hover:underline">Resume</button>
-            <button onClick={() => scrollToSection("contact")} className="hover:underline">Contact</button>
+            <button onClick={() => scrollToSection("projects")} className="hover:underline">
+              Projects
+            </button>
+            <button onClick={() => scrollToSection("resume")} className="hover:underline">
+              Resume
+            </button>
+            <button onClick={() => scrollToSection("certificates")} className="hover:underline">
+              Certificates
+            </button>
+            <button onClick={() => scrollToSection("contact")} className="hover:underline">
+              Contact
+            </button>
           </div>
 
           <div className="flex items-center space-x-4">
-            <a href="https://github.com/NikhilTanwar48" target="_blank" rel="noreferrer">
+            <a
+              href="https://github.com/NikhilTanwar48"
+              target="_blank"
+              rel="noreferrer"
+            >
               <Github className="h-5 w-5 hover:text-purple dark:hover:text-white" />
             </a>
-            <a href="mailto:youremail@example.com">
-              <Mail className="h-5 w-5 hover:text-red-500" />
-            </a>
-            <a href="https://linkedin.com/in/nikhil-tanwar" target="_blank" rel="noreferrer">
+            <a
+              href="https://www.linkedin.com/in/nikhil-tanwar-503a411a8/"
+              target="_blank"
+              rel="noreferrer"
+            >
               <Linkedin className="h-5 w-5 hover:text-blue-600" />
             </a>
             <button
               onClick={toggleDarkMode}
               className="p-2 rounded-full bg-gray-200 dark:bg-gray-700"
+              aria-label="Toggle Dark Mode"
             >
               {darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
@@ -209,21 +270,59 @@ export default function Portfolio() {
             </a>
           </motion.div>
 
+          {/* Certificates Section */}
+          <motion.div
+            id="certificates"
+            className="mb-12"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-2xl font-bold mb-6">Certificates</h2>
+
+            <div className="flex flex-wrap justify-center gap-6">
+              {certificates.map(({ name, logo, link }) => (
+                <a
+                  key={name}
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center space-y-2 p-4 border border-gray-300 dark:border-gray-700 rounded-xl bg-white/80 dark:bg-gray-900/60 hover:scale-105 transition-transform cursor-pointer w-40"
+                  aria-label={name}
+                >
+                  <Image
+                    src={logo}
+                    alt={name}
+                    width={50}
+                    height={50}
+                    className="object-contain"
+                  />
+                  <span className="text-sm font-medium text-gray-900 dark:text-gray-200">
+                    {name}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </motion.div>
+
           {/* Contact Form */}
           <motion.div
             id="contact"
-            className="text-left max-w-xl mx-auto"
+            className="max-w-lg mx-auto mb-16"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
             viewport={{ once: true }}
           >
             <h2 className="text-2xl font-bold mb-4">Contact Me</h2>
-            <form ref={form} className="space-y-4" onSubmit={sendEmail}>
-              <Input name="user_name" placeholder="Your Name" required />
-              <Input name="user_email" type="email" placeholder="Your Email" required />
-              <Textarea name="message" placeholder="Your Message" rows={5} required />
-              <Button type="submit">Send Message</Button>
+            <form ref={form} onSubmit={sendEmail} className="space-y-4">
+              <Input type="text" name="user_name" placeholder="Name" required />
+              <Input type="email" name="user_email" placeholder="Email" required />
+              <Textarea name="message" placeholder="Your message" rows={4} required />
+              <Button type="submit" className="w-full">
+                Send Message
+              </Button>
             </form>
           </motion.div>
         </div>
