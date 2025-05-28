@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import emailjs from 'emailjs-com';
 import { useRef } from 'react';
-import { error } from "console";
+
 
 
 const projects = [
@@ -68,10 +68,7 @@ export default function Portfolio() {
         alert("Message sent Successfully!");
         form.current?.reset();
       },
-      (error) => {
-  console.error("Failed to send message:", error);
-  alert("Failed to send message.");
-}
+
     );
 };
 
