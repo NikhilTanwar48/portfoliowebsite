@@ -36,6 +36,26 @@ const projects = [
     description: "Calculate net salary & visualize German income tax bands.",
     link: "https://github.com/NikhilTanwar48/german-tax-calculator",
   },
+  {
+    title: "Heart Disease Analysis",
+    description: "Machine learning model with 90%+ accuracy predicting heart disease.",
+    link: "https://github.com/vishal2501/AIML-Project",
+  },
+  {
+    title: "STOCKDOC",
+    description: "Forecasts stock prices using Yahoo Finance API & ML (TensorFlow).",
+    link: "https://github.com/NikhilTanwar48/StockDoc",
+  },
+  {
+    title: "Steganography in Python",
+    description: "Securely hides information inside images.",
+    link: "https://github.com/NikhilTanwar48/stegnography-using-python",
+  },
+  {
+    title: "Real-Time Object Detection",
+    description: "YOLOv4-based system showing bounding boxes with class & confidence.",
+    link: "https://github.com/NikhilTanwar48/Object-Detection",
+  },
 ];
 
 // Add your certificates here with public folder paths for logos
@@ -148,6 +168,27 @@ export default function Portfolio() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
+        {/* Responsive About Me Section */}
+        <section id="about" className="max-w-4xl mx-auto text-center py-16">
+          <motion.h2
+            className="text-3xl font-bold mb-4"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            About Me
+          </motion.h2>
+          <motion.p
+            className="text-base md:text-lg text-muted-foreground leading-relaxed"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            Im Nikhil Tanwar — a developer passionate about Fintech, Cybersecurity, and Data Science.
+            With a strong academic foundation and real-world project experience, I build tech that solves financial and security challenges.
+            Im currently preparing for my MSc in Fintech at the University of Galway. I love working on meaningful software and am always looking to collaborate and learn.
+          </motion.p>
+        </section>
         {/* Navbar */}
         <motion.nav
           initial={{ y: -100 }}
@@ -163,7 +204,7 @@ export default function Portfolio() {
             className="text-xl font-bold cursor-pointer"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
-            Nikhil Tanwar
+           Nikhil Tanwar
           </div>
 
           <div className="md:flex space-x-6 font-medium">
