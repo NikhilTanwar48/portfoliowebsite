@@ -12,31 +12,6 @@ import Image from "next/image";
 
 const projects = [
   {
-    title: "GDPR-Compliant Data Storage",
-    description: "Encrypt, store, delete & export user data with GDPR compliance.",
-    link: "https://github.com/NikhilTanwar48/gdpr-data-storage",
-  },
-  {
-    title: "Sustainable Investment Dashboard",
-    description: "Visualize ESG scores to guide sustainable financial choices.",
-    link: "https://github.com/NikhilTanwar48/sustainable-investments",
-  },
-  {
-    title: "Fintech Fraud Detection",
-    description: "AI-based system to detect anomalies in financial transactions.",
-    link: "https://github.com/NikhilTanwar48/fraud-detection-ml",
-  },
-  {
-    title: "Cyber Threat Monitor",
-    description: "Monitor server logs in real time and detect suspicious behavior.",
-    link: "https://github.com/NikhilTanwar48/cyber-threat-monitor",
-  },
-  {
-    title: "German Tax Calculator",
-    description: "Calculate net salary & visualize German income tax bands.",
-    link: "https://github.com/NikhilTanwar48/german-tax-calculator",
-  },
-  {
     title: "Heart Disease Analysis",
     description: "Machine learning model with 90%+ accuracy predicting heart disease.",
     link: "https://github.com/vishal2501/AIML-Project",
