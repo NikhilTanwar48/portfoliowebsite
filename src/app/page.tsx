@@ -7,12 +7,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Github, Linkedin, Moon, Sun } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
-import emailjs from "emailjs/browser";
+import emailjs from "emailjs-com";
 import Image from "next/image";
 
 const projects = [
   {
-    
     title: "Heart Disease Analysis",
     description: "Machine learning model with 90%+ accuracy predicting heart disease.",
     link: "https://github.com/vishal2501/AIML-Project",
