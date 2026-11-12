@@ -1,8 +1,6 @@
-import { ThemeProvider } from "@/components/ui/theme-provider"; // ensure this exists
-// app/layout.tsx
-
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -16,8 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nikhil Tanwar | Portfolio",
-  description: "Fintech | Cybersecurity | Data Science | ML Projects",
+  title: "Nikhil Tanwar | Data Scientist & ML Engineer",
+  description:
+    "MSc Web & Data Science at Universität Koblenz. Machine Learning, Predictive Modeling, Geospatial Analytics & Interactive Dashboards.",
 };
 
 export default function RootLayout({
@@ -27,17 +26,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeProvider>
-          <div
-            className="min-h-screen bg-gradient-to-b
-            from-sky-300 via-pink-200 to-yellow-100
-            dark:from-black dark:via-purple-900 dark:to-purple-700
-            bg-[length:100%_200%] bg-no-repeat
-            transition-all duration-[2000ms]"
-          >
-            {children}
-          </div>
+      <body className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          {children}
         </ThemeProvider>
       </body>
     </html>
