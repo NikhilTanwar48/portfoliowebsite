@@ -293,7 +293,7 @@ export default function BentoPortfolio() {
       .finally(() => setSending(false));
   };
 
-  const isDark = mounted && resolvedTheme === "dark";
+  const isDark = !mounted || resolvedTheme !== "light";
 
   return (
     <div className="metallic-scope min-h-screen relative overflow-x-hidden pb-20">
@@ -412,9 +412,9 @@ export default function BentoPortfolio() {
                 className="p-2 rounded-full border border-sky-500/30 bg-white/50 dark:bg-white/10 hover:scale-105 transition"
               >
                 {isDark ? (
-                  <Sun className="h-3.5 w-3.5 text-amber-400" />
+                  <Moon className="h-3.5 w-3.5 text-sky-400" />
                 ) : (
-                  <Moon className="h-3.5 w-3.5 text-slate-700" />
+                  <Sun className="h-3.5 w-3.5 text-amber-500" />
                 )}
               </button>
             )}
