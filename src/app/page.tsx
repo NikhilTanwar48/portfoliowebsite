@@ -300,17 +300,18 @@ export default function BentoPortfolio() {
       {/* ============================================================
           SCROLL-FLOWING THEME GRADIENT BACKGROUND LAYER
          ============================================================ */}
-      <motion.div
-        aria-hidden="true"
-        className="fixed inset-0 -z-20 transition-colors duration-700"
-        style={{
-          backgroundPosition: gradientY,
-          backgroundSize: "100% 350%",
-          backgroundImage: isDark
-            ? "linear-gradient(180deg, #05070e 0%, #0b132b 28%, #1e1136 58%, #0f172a 82%, #05070e 100%)"
-            : "linear-gradient(180deg, #e0f2fe 0%, #eef2ff 30%, #fae8ff 60%, #fef3c7 85%, #e0f2fe 100%)",
-        }}
-      />
+      {isDark && (
+        <motion.div
+          aria-hidden="true"
+          className="fixed inset-0 -z-20 transition-colors duration-700"
+          style={{
+            backgroundPosition: gradientY,
+            backgroundSize: "100% 350%",
+            backgroundImage:
+              "linear-gradient(180deg, #05070e 0%, #0b132b 28%, #1e1136 58%, #0f172a 82%, #05070e 100%)",
+          }}
+        />
+      )}
 
       {/* Subtle Technical Dot Grid Overlay */}
       <div
