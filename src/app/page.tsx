@@ -603,16 +603,10 @@ export default function BentoPortfolio() {
         <section id="work" className="space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
             <div>
-              <span className="font-mono text-xs text-sky-600 dark:text-sky-400 uppercase tracking-wider">
-                Selected Work
-              </span>
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mt-0.5">
-                Data Science &amp; ML Case Studies
+                Data Science &amp; ML projects
               </h2>
             </div>
-            <p className="text-xs font-mono text-muted-foreground">
-              Click any tile to inspect architecture &amp; results
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
@@ -987,8 +981,7 @@ export default function BentoPortfolio() {
                   Let’s build something data-driven.
                 </h2>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Open to Werkstudent, Data Science, and Machine Learning roles
-                  in Germany or remote.
+                  Open to roles in Germany or remote.
                 </p>
                 <div className="pt-2 space-y-1 font-mono text-xs text-muted-foreground">
                   <p>workidnikhil@gmail.com</p>
