@@ -34,6 +34,8 @@ import {
   Activity,
   BarChart3,
   Send,
+  BookOpen,
+  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -71,7 +73,7 @@ const bentoProjects: Project[] = [
       "Deployed a Streamlit dashboard for live delay monitoring and real-time risk prediction.",
     ],
     tags: ["Python", "XGBoost", "Scikit-learn", "Pandas", "Streamlit", "GTFS"],
-    github: "https://github.com/NikhilTanwar48",
+    github: "",
     visualType: "f1",
   },
   {
@@ -91,7 +93,7 @@ const bentoProjects: Project[] = [
       "Built an interactive host dashboard for data-driven pricing decisions.",
     ],
     tags: ["Python", "XGBoost", "Geospatial", "Pandas", "Visualization"],
-    github: "https://github.com/NikhilTanwar48",
+    github: "",
     visualType: "mae",
   },
   {
@@ -118,7 +120,7 @@ const bentoProjects: Project[] = [
       "Decision Trees",
       "Power BI",
     ],
-    github: "https://github.com/NikhilTanwar48",
+    github: "",
     visualType: "r2",
   },
 ];
@@ -159,7 +161,7 @@ const certificates = [
   },
   {
     name: "Databricks Data Warehousing",
-    logo: "/logos/google.svg", // Swap with /logos/databricks.svg when added
+    logo: "/logos/databricks.svg",
     link: "https://www.databricks.com/",
   },
   {
@@ -401,7 +403,7 @@ export default function BentoPortfolio() {
               02. Projects
             </a>
             <a href="#credentials" className="hover:text-foreground transition">
-              03. Stack &amp; Certs
+              03. Research &amp; Stack
             </a>
             <a href="#contact" className="hover:text-foreground transition">
               04. Contact
@@ -545,6 +547,18 @@ export default function BentoPortfolio() {
                   <p className="text-xs text-muted-foreground">
                     Bennett University, India
                   </p>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-xs font-mono">
+                <span className="text-muted-foreground uppercase">Languages</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="px-2 py-0.5 rounded-md bg-white/50 dark:bg-white/10 text-foreground">
+                    EN • Fluent
+                  </span>
+                  <span className="px-2 py-0.5 rounded-md bg-white/50 dark:bg-white/10 text-foreground">
+                    DE • B1
+                  </span>
                 </div>
               </div>
             </div>
@@ -735,16 +749,18 @@ export default function BentoPortfolio() {
                       <span className="inline-flex items-center gap-1 font-mono text-xs text-sky-600 dark:text-sky-400 group-hover:underline">
                         <Sparkles className="h-3.5 w-3.5" /> Inspect
                       </span>
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="p-2 rounded-lg border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/5 hover:bg-white/70 dark:hover:bg-white/15 transition"
-                        aria-label="Source Code"
-                      >
-                        <Github className="h-3.5 w-3.5" />
-                      </a>
+                      {project.github && (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="p-2 rounded-lg border border-black/10 dark:border-white/15 bg-white/40 dark:bg-white/5 hover:bg-white/70 dark:hover:bg-white/15 transition"
+                          aria-label="Source Code"
+                        >
+                          <Github className="h-3.5 w-3.5" />
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -914,6 +930,71 @@ export default function BentoPortfolio() {
               </div>
             </div>
           </BentoCard>
+
+          {/* Springer Peer-Reviewed Research Publication Tile (12 cols) */}
+          <BentoCard delay={0.18} className="md:col-span-12">
+            <div className="p-6 sm:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div className="space-y-3 max-w-3xl">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-sky-500/30 bg-sky-500/15 text-sky-600 dark:text-sky-400 font-mono text-xs font-semibold">
+                    <BookOpen className="h-3.5 w-3.5" /> Peer-Reviewed Publication • Springer
+                  </span>
+                  <span className="px-2.5 py-0.5 rounded-full border border-white/40 dark:border-white/10 bg-white/45 dark:bg-white/5 font-mono text-[11px] text-muted-foreground">
+                    Lecture Notes in Mobility • TRA 2024 (Dublin)
+                  </span>
+                </div>
+
+                <div>
+                  <h3 className="text-lg sm:text-xl font-bold leading-snug">
+                    An Efficient and Secure Blockchain Based Homomorphic Encryption for Intelligent Transport System
+                  </h3>
+                  <p className="text-xs font-mono text-muted-foreground mt-1">
+                    Nikhil Tanwar &amp; Saurabh Rana •{" "}
+                    <span className="text-foreground/80">
+                      Transport Transitions: Advancing Sustainable and Inclusive Mobility
+                    </span>{" "}
+                    • DOI: 10.1007/978-3-032-06763-0_107
+                  </p>
+                </div>
+
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Designed a lightweight fog-computing and homomorphic encryption architecture for Intelligent Transport Systems (ITS), enabling privacy-preserving vehicle route aggregation and traffic congestion management while securing public-key authentication on the Ethereum blockchain.
+                </p>
+
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {[
+                    "Intelligent Transport Systems",
+                    "Homomorphic Encryption",
+                    "Fog Computing",
+                    "Ethereum Blockchain",
+                    "Traffic Routing Privacy",
+                  ].map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-0.5 rounded-md bg-white/55 dark:bg-white/10 font-mono text-[11px]"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex lg:flex-col items-stretch sm:items-center lg:items-end justify-between gap-3 shrink-0">
+                <a
+                  href="https://link.springer.com/chapter/10.1007/978-3-032-06763-0_107"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button className="rounded-xl w-full sm:w-auto font-medium shadow-sm">
+                    Read on SpringerLink <ExternalLink className="h-4 w-4" />
+                  </Button>
+                </a>
+                <span className="font-mono text-[11px] text-muted-foreground text-right hidden lg:block">
+                  ISBN: 978-3-032-06763-0
+                </span>
+              </div>
+            </div>
+          </BentoCard>
         </section>
 
         {/* ============================================================
@@ -981,6 +1062,12 @@ export default function BentoPortfolio() {
             </div>
           </BentoCard>
         </section>
+
+        {/* Minimal Monospace Footer */}
+        <footer className="pt-4 border-t border-black/10 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-muted-foreground">
+          <p>© {new Date().getFullYear()} Nikhil Tanwar • Data Science &amp; ML Engineering</p>
+          <p>Koblenz, Germany • Built with Next.js &amp; Tailwind CSS</p>
+        </footer>
       </main>
 
       {/* Interactive Glassmorphic Case Study Modal */}
@@ -1053,20 +1140,24 @@ export default function BentoPortfolio() {
                 </div>
 
                 <div className="flex items-center gap-3 pt-2">
-                  <a
-                    href={selectedProject.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1"
-                  >
-                    <Button className="w-full rounded-xl">
-                      <Github className="h-4 w-4" /> Open Repository
-                    </Button>
-                  </a>
+                  {selectedProject.github && (
+                    <a
+                      href={selectedProject.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1"
+                    >
+                      <Button className="w-full rounded-xl">
+                        <Github className="h-4 w-4" /> Open Repository
+                      </Button>
+                    </a>
+                  )}
                   <Button
                     variant="outline"
                     onClick={() => setSelectedProject(null)}
-                    className="rounded-xl bg-white/40 dark:bg-white/5"
+                    className={`rounded-xl bg-white/40 dark:bg-white/5 ${
+                      !selectedProject.github ? "w-full" : ""
+                    }`}
                   >
                     Close
                   </Button>

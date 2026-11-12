@@ -17,6 +17,30 @@ export const metadata: Metadata = {
   title: "Nikhil Tanwar | Data Scientist & ML Engineer",
   description:
     "MSc Web & Data Science at Universität Koblenz. Machine Learning, Predictive Modeling, Geospatial Analytics & Interactive Dashboards.",
+  keywords: [
+    "Nikhil Tanwar",
+    "Data Scientist",
+    "Machine Learning Engineer",
+    "Universität Koblenz",
+    "XGBoost",
+    "Python",
+    "Geospatial Analytics",
+    "Germany",
+  ],
+  authors: [{ name: "Nikhil Tanwar" }],
+  openGraph: {
+    title: "Nikhil Tanwar | Data Scientist & ML Engineer",
+    description:
+      "MSc Web & Data Science at Universität Koblenz. Machine Learning, Predictive Modeling, Geospatial Analytics & Interactive Dashboards.",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nikhil Tanwar | Data Scientist & ML Engineer",
+    description:
+      "MSc Web & Data Science at Universität Koblenz. Machine Learning, Predictive Modeling, Geospatial Analytics & Interactive Dashboards.",
+  },
 };
 
 export default function RootLayout({
