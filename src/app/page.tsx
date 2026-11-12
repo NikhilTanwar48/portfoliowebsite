@@ -242,7 +242,7 @@ function BentoCard({
         className="pointer-events-none absolute -inset-0.5 rounded-3xl opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-500 -z-10"
         style={{
           background: isDark
-            ? `radial-gradient(350px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 189, 248, 0.35), rgba(168, 85, 247, 0.2), transparent 75%)`
+            ? `radial-gradient(250px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 189, 248, 0.35), rgba(168, 85, 247, 0.2), transparent 75%)`
             : `radial-gradient(350px circle at ${mousePos.x}px ${mousePos.y}px, rgba(244, 114, 182, 0.35), rgba(251, 146, 60, 0.22), transparent 75%)`,
         }}
       />
@@ -255,8 +255,8 @@ function BentoCard({
           style={{
             opacity: isHovered ? 1 : 0,
             background: isDark
-              ? `radial-gradient(360px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 189, 248, 0.09), transparent 70%)`
-              : `radial-gradient(360px circle at ${mousePos.x}px ${mousePos.y}px, rgba(244, 114, 182, 0.11), rgba(251, 191, 36, 0.06) 45%, transparent 70%)`,
+              ? `radial-gradient(250px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 189, 248, 0.09), transparent 70%)`
+              : `radial-gradient(250px circle at ${mousePos.x}px ${mousePos.y}px, rgba(244, 114, 182, 0.11), rgba(251, 191, 36, 0.06) 45%, transparent 70%)`,
           }}
         />
         <div className="relative z-10 h-full">{children}</div>
@@ -292,6 +292,16 @@ export default function BentoPortfolio() {
   const smoothCursorX = useSpring(cursorX, { damping: 35, stiffness: 280, mass: 0.5 });
   const smoothCursorY = useSpring(cursorY, { damping: 35, stiffness: 280, mass: 0.5 });
 
+  // Cursor-Reactive Metallic Specular Glint for Hero Name
+  const nameRef = useRef<HTMLSpanElement>(null);
+  const nameSpotX = useMotionValue(50);
+  const nameSpotY = useMotionValue(50);
+  const smoothNameX = useSpring(nameSpotX, { damping: 24, stiffness: 260, mass: 0.4 });
+  const smoothNameY = useSpring(nameSpotY, { damping: 24, stiffness: 260, mass: 0.4 });
+
+  const darkMetallicName = useMotionTemplate`radial-gradient(220px circle at ${smoothNameX}% ${smoothNameY}%, #ffffff 0%, #7dd3fc 22%, #e2e8f0 45%, #64748b 78%, #cbd5e1 100%)`;
+  const lightMetallicName = useMotionTemplate`radial-gradient(220px circle at ${smoothNameX}% ${smoothNameY}%, #f472b6 0%, #fb923c 22%, #334155 48%, #0f172a 82%, #475569 100%)`;
+
   const darkCursorHue = useMotionTemplate`radial-gradient(620px circle at ${smoothCursorX}px ${smoothCursorY}px, rgba(56, 189, 248, 0.13), rgba(168, 85, 247, 0.08) 45%, transparent 80%)`;
   const lightCursorHue = useMotionTemplate`radial-gradient(620px circle at ${smoothCursorX}px ${smoothCursorY}px, rgba(244, 114, 182, 0.16), rgba(251, 191, 36, 0.12) 45%, transparent 80%)`;
 
@@ -300,10 +310,19 @@ export default function BentoPortfolio() {
     const handleGlobalMouseMove = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
+
+      if (nameRef.current) {
+        const rect = nameRef.current.getBoundingClientRect();
+        const relX = ((e.clientX - rect.left) / rect.width) * 100;
+        const relY = ((e.clientY - rect.top) / rect.height) * 100;
+        // Clamp softly around the text bounds so the metallic sheen stays reactive across the whole page
+        nameSpotX.set(Math.max(-35, Math.min(135, relX)));
+        nameSpotY.set(Math.max(-60, Math.min(160, relY)));
+      }
     };
     window.addEventListener("mousemove", handleGlobalMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleGlobalMouseMove);
-  }, [cursorX, cursorY]);
+  }, [cursorX, cursorY, nameSpotX, nameSpotY]);
 
   const copyEmail = () => {
     navigator.clipboard.writeText("workidnikhil@gmail.com");
@@ -392,12 +411,12 @@ export default function BentoPortfolio() {
             className="font-mono text-sm font-semibold tracking-tight flex items-center gap-2"
           >
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            nikhil.tanwar
+            NIKHIL
           </a>
 
           <div className="hidden md:flex items-center gap-6 text-xs font-mono text-muted-foreground">
             <a href="#overview" className="hover:text-foreground transition">
-              01. Bento
+              01. About
             </a>
             <a href="#work" className="hover:text-foreground transition">
               02. Projects
@@ -461,7 +480,19 @@ export default function BentoPortfolio() {
                 </div>
 
                 <h1 className="text-3xl sm:text-5xl font-bold tracking-tight leading-[1.1]">
-                  Nikhil Tanwar.{" "}
+                  <motion.span
+                    ref={nameRef}
+                    style={{
+                      backgroundImage: mounted
+                        ? isDark
+                          ? darkMetallicName
+                          : lightMetallicName
+                        : undefined,
+                    }}
+                    className="inline-block bg-gradient-to-br from-slate-900 via-slate-600 to-slate-800 dark:from-white dark:via-slate-200 dark:to-slate-500 bg-clip-text text-transparent drop-shadow-[0_1px_12px_rgba(56,189,248,0.18)] select-none"
+                  >
+                    Nikhil Tanwar.
+                  </motion.span>{" "}
                   <span className="bg-gradient-to-r from-sky-500 via-blue-500 to-purple-500 bg-clip-text text-transparent">
                     Predictive ML &amp; Data Systems.
                   </span>
@@ -986,7 +1017,7 @@ export default function BentoPortfolio() {
                   rel="noopener noreferrer"
                 >
                   <Button className="rounded-xl w-full sm:w-auto font-medium shadow-sm">
-                    Read on SpringerLink <ExternalLink className="h-4 w-4" />
+                    Read on Springer <ExternalLink className="h-4 w-4" />
                   </Button>
                 </a>
                 <span className="font-mono text-[11px] text-muted-foreground text-right hidden lg:block">
