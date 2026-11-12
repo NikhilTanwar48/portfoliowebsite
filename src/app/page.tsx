@@ -292,37 +292,22 @@ export default function BentoPortfolio() {
   const smoothCursorX = useSpring(cursorX, { damping: 35, stiffness: 280, mass: 0.5 });
   const smoothCursorY = useSpring(cursorY, { damping: 35, stiffness: 280, mass: 0.5 });
 
-  // Cursor-Reactive Metallic Specular Glint for Hero Name
-  const nameRef = useRef<HTMLSpanElement>(null);
-  const nameSpotX = useMotionValue(50);
-  const nameSpotY = useMotionValue(50);
-  const smoothNameX = useSpring(nameSpotX, { damping: 24, stiffness: 260, mass: 0.4 });
-  const smoothNameY = useSpring(nameSpotY, { damping: 24, stiffness: 260, mass: 0.4 });
-
-  const darkMetallicName = useMotionTemplate`radial-gradient(220px circle at ${smoothNameX}% ${smoothNameY}%, #ffffff 0%, #7dd3fc 22%, #e2e8f0 45%, #64748b 78%, #cbd5e1 100%)`;
-  const lightMetallicName = useMotionTemplate`radial-gradient(220px circle at ${smoothNameX}% ${smoothNameY}%, #f472b6 0%, #fb923c 22%, #334155 48%, #0f172a 82%, #475569 100%)`;
-
   const darkCursorHue = useMotionTemplate`radial-gradient(620px circle at ${smoothCursorX}px ${smoothCursorY}px, rgba(56, 189, 248, 0.13), rgba(168, 85, 247, 0.08) 45%, transparent 80%)`;
   const lightCursorHue = useMotionTemplate`radial-gradient(620px circle at ${smoothCursorX}px ${smoothCursorY}px, rgba(244, 114, 182, 0.16), rgba(251, 191, 36, 0.12) 45%, transparent 80%)`;
+
+  // Metallic finish driven directly by the existing global cursor motion values (smoothCursorX / smoothCursorY)
+  const darkMetallicName = useMotionTemplate`radial-gradient(380px circle at ${smoothCursorX}px ${smoothCursorY}px, #ffffff 0%, #7dd3fc 25%, #cbd5e1 52%, #64748b 100%)`;
+  const lightMetallicName = useMotionTemplate`radial-gradient(380px circle at ${smoothCursorX}px ${smoothCursorY}px, #ec4899 0%, #f59e0b 25%, #334155 52%, #0f172a 100%)`;
 
   useEffect(() => {
     setMounted(true);
     const handleGlobalMouseMove = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
-
-      if (nameRef.current) {
-        const rect = nameRef.current.getBoundingClientRect();
-        const relX = ((e.clientX - rect.left) / rect.width) * 100;
-        const relY = ((e.clientY - rect.top) / rect.height) * 100;
-        // Clamp softly around the text bounds so the metallic sheen stays reactive across the whole page
-        nameSpotX.set(Math.max(-35, Math.min(135, relX)));
-        nameSpotY.set(Math.max(-60, Math.min(160, relY)));
-      }
     };
     window.addEventListener("mousemove", handleGlobalMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleGlobalMouseMove);
-  }, [cursorX, cursorY, nameSpotX, nameSpotY]);
+  }, [cursorX, cursorY]);
 
   const copyEmail = () => {
     navigator.clipboard.writeText("workidnikhil@gmail.com");
@@ -481,15 +466,15 @@ export default function BentoPortfolio() {
 
                 <h1 className="text-3xl sm:text-5xl font-bold tracking-tight leading-[1.1]">
                   <motion.span
-                    ref={nameRef}
                     style={{
                       backgroundImage: mounted
                         ? isDark
                           ? darkMetallicName
                           : lightMetallicName
                         : undefined,
+                      backgroundAttachment: "fixed",
                     }}
-                    className="inline-block bg-gradient-to-br from-slate-900 via-slate-600 to-slate-800 dark:from-white dark:via-slate-200 dark:to-slate-500 bg-clip-text text-transparent drop-shadow-[0_1px_12px_rgba(56,189,248,0.18)] select-none"
+                    className="inline-block bg-gradient-to-br from-slate-900 via-slate-600 to-slate-800 dark:from-white dark:via-slate-200 dark:to-slate-500 bg-clip-text text-transparent select-none"
                   >
                     Nikhil Tanwar.
                   </motion.span>{" "}
