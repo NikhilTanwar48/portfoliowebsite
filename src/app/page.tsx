@@ -223,15 +223,10 @@ function BentoCard({
 export default function BentoPortfolio() {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [lightVariant, setLightVariant] = useState<"sandstone" | "sage" | "titanium">("sandstone");
   const [copied, setCopied] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [sending, setSending] = useState(false);
   const form = useRef<HTMLFormElement>(null);
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-light-variant", lightVariant);
-  }, [lightVariant]);
 
   // Scroll-Driven Flowing Theme Gradient
   const { scrollYProgress } = useScroll();
@@ -251,16 +246,7 @@ export default function BentoPortfolio() {
   const smoothCursorY = useSpring(cursorY, { damping: 35, stiffness: 280, mass: 0.5 });
 
   const darkCursorHue = useMotionTemplate`radial-gradient(620px circle at ${smoothCursorX}px ${smoothCursorY}px, rgba(56, 189, 248, 0.14), rgba(168, 85, 247, 0.08) 45%, transparent 80%)`;
-  const sandstoneCursorHue = useMotionTemplate`radial-gradient(620px circle at ${smoothCursorX}px ${smoothCursorY}px, rgba(217, 119, 6, 0.12), rgba(180, 83, 9, 0.07) 45%, transparent 80%)`;
-  const sageCursorHue = useMotionTemplate`radial-gradient(620px circle at ${smoothCursorX}px ${smoothCursorY}px, rgba(16, 185, 129, 0.12), rgba(13, 148, 136, 0.07) 45%, transparent 80%)`;
-  const titaniumCursorHue = useMotionTemplate`radial-gradient(620px circle at ${smoothCursorX}px ${smoothCursorY}px, rgba(59, 130, 246, 0.12), rgba(124, 58, 237, 0.07) 45%, transparent 80%)`;
-
-  const activeLightCursorHue =
-    lightVariant === "sandstone"
-      ? sandstoneCursorHue
-      : lightVariant === "sage"
-      ? sageCursorHue
-      : titaniumCursorHue;
+  const lightCursorHue = useMotionTemplate`radial-gradient(620px circle at ${smoothCursorX}px ${smoothCursorY}px, rgba(16, 185, 129, 0.12), rgba(13, 148, 136, 0.07) 45%, transparent 80%)`;
 
   useEffect(() => {
     setMounted(true);
@@ -367,7 +353,7 @@ export default function BentoPortfolio() {
           aria-hidden="true"
           className="pointer-events-none fixed inset-0 z-30 transition-opacity duration-500"
           style={{
-            background: isDark ? darkCursorHue : activeLightCursorHue,
+            background: isDark ? darkCursorHue : lightCursorHue,
           }}
         />
       )}
@@ -421,29 +407,6 @@ export default function BentoPortfolio() {
             >
               <Linkedin className="h-4 w-4" />
             </a>
-            {mounted && !isDark && (
-              <div className="flex items-center gap-1 rounded-full border border-black/10 bg-black/[0.04] p-0.5 mr-1 font-mono text-[10px]">
-                {(
-                  [
-                    { id: "sandstone", label: "1. Sandstone" },
-                    { id: "sage", label: "2. Sage" },
-                    { id: "titanium", label: "3. Titanium" },
-                  ] as const
-                ).map((opt) => (
-                  <button
-                    key={opt.id}
-                    onClick={() => setLightVariant(opt.id)}
-                    className={`px-2 py-1 rounded-full transition ${
-                      lightVariant === opt.id
-                        ? "bg-black/15 font-semibold"
-                        : "opacity-65 hover:opacity-100"
-                    }`}
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            )}
             {mounted && (
               <button
                 onClick={() => setTheme(isDark ? "light" : "dark")}
