@@ -227,7 +227,6 @@ export default function BentoPortfolio() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [sending, setSending] = useState(false);
   const form = useRef<HTMLFormElement>(null);
-  const rootRef = useRef<HTMLDivElement>(null);
 
   // Scroll-Driven Flowing Theme Gradient
   const { scrollYProgress } = useScroll();
@@ -239,8 +238,6 @@ export default function BentoPortfolio() {
 
   // Shifts the 400%-tall gradient smoothly as user scrolls top -> bottom
   const gradientY = useTransform(smoothProgress, [0, 1], ["0% 0%", "0% 100%"]);
-  const orbTopY = useTransform(smoothProgress, [0, 1], ["0%", "55%"]);
-  const orbBottomY = useTransform(smoothProgress, [0, 1], ["0%", "-45%"]);
 
   // Subtle Page-Wide Cursor Hue Follower (distinct colors for dark vs light theme)
   const cursorX = useMotionValue(-1000);
@@ -258,10 +255,10 @@ export default function BentoPortfolio() {
       cursorY.set(e.clientY);
     };
     const unsubX = smoothCursorX.on("change", (v) => {
-      rootRef.current?.style.setProperty("--cursor-x", `${Math.round(v)}px`);
+      document.documentElement.style.setProperty("--cursor-x", `${v}px`);
     });
     const unsubY = smoothCursorY.on("change", (v) => {
-      rootRef.current?.style.setProperty("--cursor-y", `${Math.round(v)}px`);
+      document.documentElement.style.setProperty("--cursor-y", `${v}px`);
     });
     window.addEventListener("mousemove", handleGlobalMouseMove, { passive: true });
     return () => {
@@ -299,10 +296,7 @@ export default function BentoPortfolio() {
   const isDark = mounted && resolvedTheme === "dark";
 
   return (
-    <div
-      ref={rootRef}
-      className="metallic-scope min-h-screen relative overflow-x-hidden pb-20"
-    >
+    <div className="metallic-scope min-h-screen relative overflow-x-hidden pb-20">
       {/* ============================================================
           SCROLL-FLOWING THEME GRADIENT BACKGROUND LAYER
          ============================================================ */}
@@ -330,16 +324,24 @@ export default function BentoPortfolio() {
         }}
       />
 
-      {/* Parallax Ambient Color Orbs that Drift with Scroll */}
-      <motion.div
+      {/* Ambient Background Color Orbs (Replaced CSS filter blur-[140px] with radial gradients to prevent GPU backdrop-filter flicker on scroll/mouse switch) */}
+      <div
         aria-hidden="true"
-        style={{ y: orbTopY }}
-        className="pointer-events-none fixed -top-24 left-1/4 w-[650px] h-[420px] rounded-full bg-sky-400/25 dark:bg-sky-500/15 blur-[130px] -z-10"
+        className="pointer-events-none fixed -top-24 left-1/4 w-[650px] h-[420px] rounded-full -z-10"
+        style={{
+          background: isDark
+            ? "radial-gradient(closest-side, rgba(14, 165, 233, 0.16), transparent 100%)"
+            : "radial-gradient(closest-side, rgba(56, 189, 248, 0.26), transparent 100%)",
+        }}
       />
-      <motion.div
+      <div
         aria-hidden="true"
-        style={{ y: orbBottomY }}
-        className="pointer-events-none fixed bottom-0 right-1/5 w-[650px] h-[420px] rounded-full bg-purple-400/25 dark:bg-purple-600/20 blur-[140px] -z-10"
+        className="pointer-events-none fixed bottom-0 right-1/5 w-[650px] h-[420px] rounded-full -z-10"
+        style={{
+          background: isDark
+            ? "radial-gradient(closest-side, rgba(147, 51, 234, 0.20), transparent 100%)"
+            : "radial-gradient(closest-side, rgba(192, 132, 252, 0.26), transparent 100%)",
+        }}
       />
 
       {/* Subtle Cursor-Following Ambient Hue (Different Color per Theme) */}
