@@ -182,7 +182,9 @@ const certificates = [
 ];
 
 /**
- * Reusable Glassmorphic Bento Tile with Cursor-Tracking Luminous Border Ring
+ * Reusable Apple-Glass Bento Tile
+ * Zero internal cursor tracking or separate glow — acts as pure frosted Apple glass
+ * with overhead specular light catching the top rim while the single page cursor light passes over/through.
  */
 function BentoCard({
   children,
@@ -195,72 +197,18 @@ function BentoCard({
   delay?: number;
   onClick?: () => void;
 }) {
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme !== "light";
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
-
   return (
     <motion.div
-      ref={cardRef}
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.45, delay }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
-      className={`group relative rounded-3xl p-[1.5px] transition-transform duration-300 hover:-translate-y-0.5 ${
+      className={`group relative rounded-3xl bento-glass overflow-hidden transition-transform duration-300 hover:-translate-y-0.5 ${
         onClick ? "cursor-pointer" : ""
       } ${className}`}
     >
-      {/* Always-on Subtle Glowing Ring + Dynamic Cursor-Following Spotlight Ring */}
-      <div
-        className="pointer-events-none absolute inset-0 rounded-3xl transition-opacity duration-300"
-        style={{
-          background: isHovered
-            ? isDark
-              ? `radial-gradient(300px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 189, 248, 0.75), rgba(168, 85, 247, 0.4) 45%, rgba(255, 255, 255, 0.08) 80%)`
-              : `radial-gradient(30px circle at ${mousePos.x}px ${mousePos.y}px, rgba(244, 114, 182, 0.7), rgba(251, 146, 60, 0.45) 45%, rgba(15, 23, 42, 0.08) 80%)`
-            : `linear-gradient(135deg, rgba(56, 189, 248, 0.35), rgba(168, 85, 247, 0.22), rgba(16, 185, 129, 0.25))`,
-        }}
-      />
-
-      {/* Ambient Outer Halo on Hover */}
-      <div
-        className="pointer-events-none absolute -inset-0.5 rounded-3xl opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-500 -z-10"
-        style={{
-          background: isDark
-            ? `radial-gradient(250px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 189, 248, 0.35), rgba(168, 85, 247, 0.2), transparent 75%)`
-            : `radial-gradient(250px circle at ${mousePos.x}px ${mousePos.y}px, rgba(244, 114, 182, 0.35), rgba(251, 146, 60, 0.22), transparent 75%)`,
-        }}
-      />
-
-      {/* Inner Frosted Glassmorphic Container */}
-      <div className="relative h-full w-full rounded-[22.5px] bento-glass overflow-hidden">
-        {/* Subtle Internal Cursor Sheen */}
-        <div
-          className="pointer-events-none absolute inset-0 transition-opacity duration-300"
-          style={{
-            opacity: isHovered ? 1 : 0,
-            background: isDark
-              ? `radial-gradient(250px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 189, 248, 0.09), transparent 70%)`
-              : `radial-gradient(250px circle at ${mousePos.x}px ${mousePos.y}px, rgba(244, 114, 182, 0.11), rgba(251, 191, 36, 0.06) 45%, transparent 70%)`,
-          }}
-        />
-        <div className="relative z-10 h-full">{children}</div>
-      </div>
+      <div className="relative z-10 h-full">{children}</div>
     </motion.div>
   );
 }
@@ -292,12 +240,8 @@ export default function BentoPortfolio() {
   const smoothCursorX = useSpring(cursorX, { damping: 35, stiffness: 280, mass: 0.5 });
   const smoothCursorY = useSpring(cursorY, { damping: 35, stiffness: 280, mass: 0.5 });
 
-  const darkCursorHue = useMotionTemplate`radial-gradient(620px circle at ${smoothCursorX}px ${smoothCursorY}px, rgba(56, 189, 248, 0.13), rgba(168, 85, 247, 0.08) 45%, transparent 80%)`;
+  const darkCursorHue = useMotionTemplate`radial-gradient(620px circle at ${smoothCursorX}px ${smoothCursorY}px, rgba(56, 189, 248, 0.14), rgba(168, 85, 247, 0.08) 45%, transparent 80%)`;
   const lightCursorHue = useMotionTemplate`radial-gradient(620px circle at ${smoothCursorX}px ${smoothCursorY}px, rgba(244, 114, 182, 0.16), rgba(251, 191, 36, 0.12) 45%, transparent 80%)`;
-
-  // Metallic finish driven directly by the existing global cursor motion values (smoothCursorX / smoothCursorY)
-  const darkMetallicName = useMotionTemplate`radial-gradient(380px circle at ${smoothCursorX}px ${smoothCursorY}px, #ffffff 0%, #7dd3fc 25%, #cbd5e1 52%, #64748b 100%)`;
-  const lightMetallicName = useMotionTemplate`radial-gradient(380px circle at ${smoothCursorX}px ${smoothCursorY}px, #ec4899 0%, #f59e0b 25%, #334155 52%, #0f172a 100%)`;
 
   useEffect(() => {
     setMounted(true);
@@ -305,9 +249,19 @@ export default function BentoPortfolio() {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
     };
+    const unsubX = smoothCursorX.on("change", (v) => {
+      document.documentElement.style.setProperty("--cursor-x", `${v}px`);
+    });
+    const unsubY = smoothCursorY.on("change", (v) => {
+      document.documentElement.style.setProperty("--cursor-y", `${v}px`);
+    });
     window.addEventListener("mousemove", handleGlobalMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleGlobalMouseMove);
-  }, [cursorX, cursorY]);
+    return () => {
+      window.removeEventListener("mousemove", handleGlobalMouseMove);
+      unsubX();
+      unsubY();
+    };
+  }, [cursorX, cursorY, smoothCursorX, smoothCursorY]);
 
   const copyEmail = () => {
     navigator.clipboard.writeText("workidnikhil@gmail.com");
@@ -337,7 +291,7 @@ export default function BentoPortfolio() {
   const isDark = mounted && resolvedTheme === "dark";
 
   return (
-    <div className="min-h-screen relative overflow-x-hidden pb-20">
+    <div className="metallic-scope min-h-screen relative overflow-x-hidden pb-20">
       {/* ============================================================
           SCROLL-FLOWING THEME GRADIENT BACKGROUND LAYER
          ============================================================ */}
@@ -395,7 +349,7 @@ export default function BentoPortfolio() {
             href="#"
             className="font-mono text-sm font-semibold tracking-tight flex items-center gap-2"
           >
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="no-metallic h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
             NIKHIL
           </a>
 
@@ -460,27 +414,13 @@ export default function BentoPortfolio() {
             <div className="p-7 sm:p-10 h-full flex flex-col justify-between gap-8">
               <div className="space-y-4">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-500/25 bg-white/50 dark:bg-white/5 font-mono text-xs text-muted-foreground">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  <span className="no-metallic h-1.5 w-1.5 rounded-full bg-emerald-500" />
                   Available for Data Science &amp; ML Roles
                 </div>
 
-                <h1 className="text-3xl sm:text-5xl font-bold]">
-                  <motion.span
-                    style={{
-                      backgroundImage: mounted
-                        ? isDark
-                          ? darkMetallicName
-                          : lightMetallicName
-                        : undefined,
-                      backgroundAttachment: "fixed",
-                    }}
-                    className="inline-block bg-gradient-to-br from-slate-900 via-slate-600 to-slate-800 dark:from-white dark:via-slate-200 dark:to-slate-500 bg-clip-text text-transparent select-none"
-                  >
-                    Nikhil Tanwar.
-                  </motion.span>{" "}
-                  <span className="bg-gradient-to-r from-sky-500 via-blue-500 to-purple-500 bg-clip-text text-transparent">
-                    Predictive ML &amp; Data Systems.
-                  </span>
+                <h1 className="text-3xl sm:text-5xl font-bold tracking-tight leading-[1.1]">
+                  <span>Nikhil Tanwar.</span>{" "}
+                  <span>Predictive ML &amp; Data Systems.</span>
                 </h1>
 
                 <p className="text-sm sm:text-base text-muted-foreground max-w-2xl leading-relaxed">
