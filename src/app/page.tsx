@@ -231,8 +231,8 @@ function BentoCard({
         style={{
           background: isHovered
             ? isDark
-              ? `radial-gradient(420px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 189, 248, 0.75), rgba(168, 85, 247, 0.4) 45%, rgba(255, 255, 255, 0.08) 80%)`
-              : `radial-gradient(420px circle at ${mousePos.x}px ${mousePos.y}px, rgba(244, 114, 182, 0.7), rgba(251, 146, 60, 0.45) 45%, rgba(15, 23, 42, 0.08) 80%)`
+              ? `radial-gradient(300px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 189, 248, 0.75), rgba(168, 85, 247, 0.4) 45%, rgba(255, 255, 255, 0.08) 80%)`
+              : `radial-gradient(30px circle at ${mousePos.x}px ${mousePos.y}px, rgba(244, 114, 182, 0.7), rgba(251, 146, 60, 0.45) 45%, rgba(15, 23, 42, 0.08) 80%)`
             : `linear-gradient(135deg, rgba(56, 189, 248, 0.35), rgba(168, 85, 247, 0.22), rgba(16, 185, 129, 0.25))`,
         }}
       />
@@ -243,7 +243,7 @@ function BentoCard({
         style={{
           background: isDark
             ? `radial-gradient(250px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 189, 248, 0.35), rgba(168, 85, 247, 0.2), transparent 75%)`
-            : `radial-gradient(350px circle at ${mousePos.x}px ${mousePos.y}px, rgba(244, 114, 182, 0.35), rgba(251, 146, 60, 0.22), transparent 75%)`,
+            : `radial-gradient(250px circle at ${mousePos.x}px ${mousePos.y}px, rgba(244, 114, 182, 0.35), rgba(251, 146, 60, 0.22), transparent 75%)`,
         }}
       />
 
@@ -464,7 +464,7 @@ export default function BentoPortfolio() {
                   Available for Data Science &amp; ML Roles
                 </div>
 
-                <h1 className="text-3xl sm:text-5xl font-bold tracking-tight leading-[1.1]">
+                <h1 className="text-3xl sm:text-5xl font-bold]">
                   <motion.span
                     style={{
                       backgroundImage: mounted
@@ -1082,7 +1082,7 @@ export default function BentoPortfolio() {
         {/* Minimal Monospace Footer */}
         <footer className="pt-4 border-t border-black/10 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-muted-foreground">
           <p>© {new Date().getFullYear()} Nikhil Tanwar • Data Science &amp; ML Engineering</p>
-          <p>Koblenz, Germany • Built with Next.js &amp; Tailwind CSS</p>
+          <p>Koblenz, Germany </p>
         </footer>
       </main>
 
