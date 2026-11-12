@@ -183,8 +183,10 @@ const certificates = [
 
 /**
  * Reusable Apple-Glass Bento Tile
- * Zero internal cursor tracking or separate glow — acts as pure frosted Apple glass
- * with overhead specular light catching the top rim while the single page cursor light passes over/through.
+ * Notice: The `.bento-glass` backdrop-filter and any motion transforms are placed on a separate
+ * background layer (`-z-10`) rather than on the parent of the text. In CSS, `backdrop-filter` and
+ * `transform` break `background-attachment: fixed` for child elements, which previously caused the
+ * metallic text gradient to shift coordinate spaces whenever the cursor entered or hovered a Bento card!
  */
 function BentoCard({
   children,
@@ -199,15 +201,20 @@ function BentoCard({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.45, delay }}
       onClick={onClick}
-      className={`group relative rounded-3xl bento-glass overflow-hidden transition-transform duration-300 hover:-translate-y-0.5 ${
+      className={`group relative rounded-3xl ${
         onClick ? "cursor-pointer" : ""
       } ${className}`}
     >
+      {/* Pure Apple-Glass Material Layer (isolated from text so fixed viewport gradients never shift) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 rounded-3xl bento-glass transition-shadow duration-300"
+      />
       <div className="relative z-10 h-full">{children}</div>
     </motion.div>
   );
@@ -344,16 +351,20 @@ export default function BentoPortfolio() {
 
       {/* Minimal Floating Glass Pill Nav */}
       <header className="sticky top-4 z-40 px-4">
-        <nav className="max-w-6xl mx-auto rounded-full border border-sky-500/25 bento-glass px-5 py-2.5 flex items-center justify-between">
+        <nav className="relative max-w-6xl mx-auto rounded-full px-5 py-2.5 flex items-center justify-between">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 rounded-full border border-sky-500/25 bento-glass"
+          />
           <a
             href="#"
-            className="font-mono text-sm font-semibold tracking-tight flex items-center gap-2"
+            className="relative z-10 font-mono text-sm font-semibold tracking-tight flex items-center gap-2"
           >
             <span className="no-metallic h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
             NIKHIL
           </a>
 
-          <div className="hidden md:flex items-center gap-6 text-xs font-mono text-muted-foreground">
+          <div className="relative z-10 hidden md:flex items-center gap-6 text-xs font-mono text-muted-foreground">
             <a href="#overview" className="hover:text-foreground transition">
               01. About
             </a>
@@ -368,7 +379,7 @@ export default function BentoPortfolio() {
             </a>
           </div>
 
-          <div className="flex items-center gap-1.5">
+          <div className="relative z-10 flex items-center gap-1.5">
             <a
               href="https://github.com/NikhilTanwar48"
               target="_blank"
