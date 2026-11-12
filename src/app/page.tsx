@@ -182,7 +182,9 @@ const certificates = [
 ];
 
 /**
- * Reusable Glassmorphic Bento Tile with Cursor-Tracking Luminous Border Ring
+ * Reusable Glassmorphic Bento Tile
+ * Relies on the single global cursor light source + CSS variables (--cursor-x, --cursor-y)
+ * so the glow and frosted glass behave as one continuous light field across the entire page.
  */
 function BentoCard({
   children,
@@ -197,68 +199,31 @@ function BentoCard({
 }) {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme !== "light";
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  };
 
   return (
     <motion.div
-      ref={cardRef}
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.45, delay }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
       className={`group relative rounded-3xl p-[1.5px] transition-transform duration-300 hover:-translate-y-0.5 ${
         onClick ? "cursor-pointer" : ""
       } ${className}`}
     >
-      {/* Always-on Subtle Glowing Ring + Dynamic Cursor-Following Spotlight Ring */}
+      {/* Seamless Global Cursor-Tracked Border Ring (uses viewport-fixed coordinates) */}
       <div
-        className="pointer-events-none absolute inset-0 rounded-3xl transition-opacity duration-300"
+        className="pointer-events-none absolute inset-0 rounded-3xl"
         style={{
-          background: isHovered
-            ? isDark
-              ? `radial-gradient(300px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 189, 248, 0.75), rgba(168, 85, 247, 0.4) 45%, rgba(255, 255, 255, 0.08) 80%)`
-              : `radial-gradient(30px circle at ${mousePos.x}px ${mousePos.y}px, rgba(244, 114, 182, 0.7), rgba(251, 146, 60, 0.45) 45%, rgba(15, 23, 42, 0.08) 80%)`
-            : `linear-gradient(135deg, rgba(56, 189, 248, 0.35), rgba(168, 85, 247, 0.22), rgba(16, 185, 129, 0.25))`,
-        }}
-      />
-
-      {/* Ambient Outer Halo on Hover */}
-      <div
-        className="pointer-events-none absolute -inset-0.5 rounded-3xl opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-500 -z-10"
-        style={{
-          background: isDark
-            ? `radial-gradient(250px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 189, 248, 0.35), rgba(168, 85, 247, 0.2), transparent 75%)`
-            : `radial-gradient(250px circle at ${mousePos.x}px ${mousePos.y}px, rgba(244, 114, 182, 0.35), rgba(251, 146, 60, 0.22), transparent 75%)`,
+          backgroundImage: isDark
+            ? `radial-gradient(480px circle at var(--cursor-x, -1000px) var(--cursor-y, -1000px), rgba(56, 189, 248, 0.85), rgba(168, 85, 247, 0.45) 45%, rgba(255, 255, 255, 0.1) 80%)`
+            : `radial-gradient(480px circle at var(--cursor-x, -1000px) var(--cursor-y, -1000px), rgba(244, 114, 182, 0.75), rgba(251, 146, 60, 0.45) 45%, rgba(15, 23, 42, 0.1) 80%)`,
+          backgroundAttachment: "fixed",
         }}
       />
 
       {/* Inner Frosted Glassmorphic Container */}
       <div className="relative h-full w-full rounded-[22.5px] bento-glass overflow-hidden">
-        {/* Subtle Internal Cursor Sheen */}
-        <div
-          className="pointer-events-none absolute inset-0 transition-opacity duration-300"
-          style={{
-            opacity: isHovered ? 1 : 0,
-            background: isDark
-              ? `radial-gradient(250px circle at ${mousePos.x}px ${mousePos.y}px, rgba(56, 189, 248, 0.09), transparent 70%)`
-              : `radial-gradient(250px circle at ${mousePos.x}px ${mousePos.y}px, rgba(244, 114, 182, 0.11), rgba(251, 191, 36, 0.06) 45%, transparent 70%)`,
-          }}
-        />
         <div className="relative z-10 h-full">{children}</div>
       </div>
     </motion.div>
@@ -292,8 +257,8 @@ export default function BentoPortfolio() {
   const smoothCursorX = useSpring(cursorX, { damping: 35, stiffness: 280, mass: 0.5 });
   const smoothCursorY = useSpring(cursorY, { damping: 35, stiffness: 280, mass: 0.5 });
 
-  const darkCursorHue = useMotionTemplate`radial-gradient(620px circle at ${smoothCursorX}px ${smoothCursorY}px, rgba(56, 189, 248, 0.13), rgba(168, 85, 247, 0.08) 45%, transparent 80%)`;
-  const lightCursorHue = useMotionTemplate`radial-gradient(620px circle at ${smoothCursorX}px ${smoothCursorY}px, rgba(244, 114, 182, 0.16), rgba(251, 191, 36, 0.12) 45%, transparent 80%)`;
+  const darkCursorHue = useMotionTemplate`radial-gradient(650px circle at ${smoothCursorX}px ${smoothCursorY}px, rgba(56, 189, 248, 0.22), rgba(168, 85, 247, 0.14) 45%, transparent 80%)`;
+  const lightCursorHue = useMotionTemplate`radial-gradient(650px circle at ${smoothCursorX}px ${smoothCursorY}px, rgba(244, 114, 182, 0.28), rgba(251, 191, 36, 0.18) 45%, transparent 80%)`;
 
   // Metallic finish driven directly by the existing global cursor motion values (smoothCursorX / smoothCursorY)
   const darkMetallicName = useMotionTemplate`radial-gradient(380px circle at ${smoothCursorX}px ${smoothCursorY}px, #ffffff 0%, #7dd3fc 25%, #cbd5e1 52%, #64748b 100%)`;
@@ -305,9 +270,19 @@ export default function BentoPortfolio() {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
     };
+    const unsubX = smoothCursorX.on("change", (v) => {
+      document.documentElement.style.setProperty("--cursor-x", `${v}px`);
+    });
+    const unsubY = smoothCursorY.on("change", (v) => {
+      document.documentElement.style.setProperty("--cursor-y", `${v}px`);
+    });
     window.addEventListener("mousemove", handleGlobalMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleGlobalMouseMove);
-  }, [cursorX, cursorY]);
+    return () => {
+      window.removeEventListener("mousemove", handleGlobalMouseMove);
+      unsubX();
+      unsubY();
+    };
+  }, [cursorX, cursorY, smoothCursorX, smoothCursorY]);
 
   const copyEmail = () => {
     navigator.clipboard.writeText("workidnikhil@gmail.com");
@@ -377,11 +352,11 @@ export default function BentoPortfolio() {
         className="pointer-events-none fixed bottom-0 right-1/5 w-[650px] h-[420px] rounded-full bg-purple-400/25 dark:bg-purple-600/20 blur-[140px] -z-10"
       />
 
-      {/* Subtle Cursor-Following Ambient Hue (Different Color per Theme) */}
+      {/* Subtle Cursor-Following Ambient Hue (Behind Glassmorphic Bento Tiles) */}
       {mounted && (
         <motion.div
           aria-hidden="true"
-          className="pointer-events-none fixed inset-0 z-30 transition-opacity duration-500"
+          className="pointer-events-none fixed inset-0 -z-10 transition-opacity duration-500"
           style={{
             background: isDark ? darkCursorHue : lightCursorHue,
           }}
