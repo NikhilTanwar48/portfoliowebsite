@@ -93,6 +93,9 @@
     inset 0 1.5px 0 0 rgba(255, 255, 255, 0.95),
     inset 0 -1px 0 0 rgba(15, 23, 42, 0.05),
     0 12px 36px -12px rgba(15, 23, 42, 0.08);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .dark .bento-glass {
@@ -108,57 +111,61 @@
     inset 0 1.5px 0 0 rgba(255, 255, 255, 0.28),
     inset 0 -1px 0 0 rgba(255, 255, 255, 0.04),
     0 16px 40px -12px rgba(0, 0, 0, 0.6);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* Global Cursor-Reactive Metallic Text Finish across the Website */
 :root {
   --cursor-x: -1000px;
   --cursor-y: -1000px;
-  --metallic-primary: radial-gradient(
+}
+
+.metallic-scope :is(h1, h2, h3, h4, p, span, a):not(.no-metallic):not(:has(button, img, div)) {
+  background-image: radial-gradient(
     420px circle at var(--cursor-x) var(--cursor-y),
     #ec4899 0%,
     #f59e0b 25%,
     #334155 52%,
     #0f172a 100%
   );
-  --metallic-muted: radial-gradient(
-    420px circle at var(--cursor-x) var(--cursor-y),
-    #db2777 0%,
-    #d97706 25%,
-    #475569 55%,
-    #334155 100%
-  );
+  background-attachment: fixed;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
 }
 
-.dark {
-  --metallic-primary: radial-gradient(
+.dark .metallic-scope :is(h1, h2, h3, h4, p, span, a):not(.no-metallic):not(:has(button, img, div)) {
+  background-image: radial-gradient(
     420px circle at var(--cursor-x) var(--cursor-y),
     #ffffff 0%,
     #7dd3fc 25%,
     #cbd5e1 52%,
     #64748b 100%
   );
-  --metallic-muted: radial-gradient(
+}
+
+.metallic-scope :is(.text-muted-foreground, p):not(h1, h2, h3, h4, .font-bold, .font-semibold, .no-metallic):not(:has(button, img, div)) {
+  background-image: radial-gradient(
+    420px circle at var(--cursor-x) var(--cursor-y),
+    #db2777 0%,
+    #d97706 25%,
+    #475569 55%,
+    #334155 100%
+  );
+  background-attachment: fixed;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+.dark .metallic-scope :is(.text-muted-foreground, p):not(h1, h2, h3, h4, .font-bold, .font-semibold, .no-metallic):not(:has(button, img, div)) {
+  background-image: radial-gradient(
     420px circle at var(--cursor-x) var(--cursor-y),
     #f8fafc 0%,
     #38bdf8 25%,
     #94a3b8 55%,
     #64748b 100%
   );
-}
-
-.metallic-scope :is(h1, h2, h3, h4, p, span, a, li):not(.no-metallic):not(:has(button, img, div)) {
-  background-image: var(--metallic-primary);
-  background-attachment: fixed;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent !important;
-}
-
-.metallic-scope :is(.text-muted-foreground, p, li):not(h1, h2, h3, h4, .font-bold, .font-semibold, .no-metallic):not(:has(button, img, div)) {
-  background-image: var(--metallic-muted);
-  background-attachment: fixed;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent !important;
 }

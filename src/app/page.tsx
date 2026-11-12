@@ -227,6 +227,7 @@ export default function BentoPortfolio() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [sending, setSending] = useState(false);
   const form = useRef<HTMLFormElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   // Scroll-Driven Flowing Theme Gradient
   const { scrollYProgress } = useScroll();
@@ -257,10 +258,10 @@ export default function BentoPortfolio() {
       cursorY.set(e.clientY);
     };
     const unsubX = smoothCursorX.on("change", (v) => {
-      document.documentElement.style.setProperty("--cursor-x", `${v}px`);
+      rootRef.current?.style.setProperty("--cursor-x", `${Math.round(v)}px`);
     });
     const unsubY = smoothCursorY.on("change", (v) => {
-      document.documentElement.style.setProperty("--cursor-y", `${v}px`);
+      rootRef.current?.style.setProperty("--cursor-y", `${Math.round(v)}px`);
     });
     window.addEventListener("mousemove", handleGlobalMouseMove, { passive: true });
     return () => {
@@ -298,7 +299,10 @@ export default function BentoPortfolio() {
   const isDark = mounted && resolvedTheme === "dark";
 
   return (
-    <div className="metallic-scope min-h-screen relative overflow-x-hidden pb-20">
+    <div
+      ref={rootRef}
+      className="metallic-scope min-h-screen relative overflow-x-hidden pb-20"
+    >
       {/* ============================================================
           SCROLL-FLOWING THEME GRADIENT BACKGROUND LAYER
          ============================================================ */}
